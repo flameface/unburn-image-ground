@@ -184,7 +184,7 @@ export default function Home() {
           <div className="setting">
             <Select
               items={resolutions}
-              label="Fit"
+              label="Resolution"
               className="max-w-full"
               defaultSelectedKeys={["square"]}
               onChange={(e) => setRes(e.target.value)}
