@@ -1,0 +1,160 @@
+.ground {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    height: 93vh;
+    gap: 20px;
+}
+
+.side-menu {
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #393939;
+    padding: 20px;
+    border-radius: 10px;
+    gap: 30px;
+    height: 100%;
+    width: 30%;
+}
+
+.side-menu .file-input-label {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    width: 100%;
+    background-color: #27272A;
+    border-radius: 100px;
+    font-size: 14px;
+    padding: 10px;
+    gap: 5px;
+    cursor: pointer;
+    transition: background-color 0.1s ease-in-out;
+}
+
+.side-menu .file-input-label:hover {
+    background-color: #3f3f46;
+}
+
+.edit-area {
+    display: flex;
+    flex-direction: row;
+    border: 1px solid #393939;
+    border-radius: 10px;
+    overflow: hidden;
+    position: relative;
+    background: url(/grid.png);
+    justify-content: flex-end;
+    align-items: flex-end;
+    padding: 20px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
+    width: 100%;
+    height: 100%;
+}
+
+.content {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+}
+
+.zoom-buttons {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+}
+
+.blur {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    animation: blur-fade-in 0.3s ease-in-out forwards;
+}
+
+.blur-fade-out {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    animation: blur-fade-out 0.3s ease-in-out forwards;
+}
+
+.gallery {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 20px;
+    align-content: flex-start;
+    justify-content: flex-start;
+}
+
+.gallery img {
+    width: 220px;
+    height: 220px;
+    object-fit: cover;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: transform 0.2s ease-in-out;
+}
+
+.gallery img:hover {
+    transform: scale(1.05);
+}
+
+@keyframes blur-fade-in {
+    from {
+        backdrop-filter: blur(0px);
+    }
+
+    to {
+        backdrop-filter: blur(50px);
+    }
+}
+
+@keyframes blur-fade-out {
+    from {
+        backdrop-filter: blur(50px);
+    }
+
+    to {
+        backdrop-filter: blur(0px);
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .ground {
+        display: flex;
+        flex-direction: column-reverse;
+        width: 100%;
+        height: 93vh;
+        gap: 20px;
+    }
+
+    .edit-area {
+        width: 100%;
+        height: 1200px;
+    }
+
+    .side-menu {
+        width: 100%;
+    }
+
+    .side-menu .file-input-label {
+        justify-content: center;
+    }
+
+    .gallery img {
+        width: 100%;
+        height: 200px;
+        object-fit: cover;
+        border-radius: 10px;
+    }
+}
