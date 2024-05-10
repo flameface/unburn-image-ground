@@ -134,17 +134,18 @@
         display: flex;
         flex-direction: column-reverse;
         width: 100%;
-        height: 93vh;
+        height: 100%;
         gap: 20px;
     }
 
     .edit-area {
         width: 100%;
-        height: 1200px;
+        height: 512px;
     }
 
     .side-menu {
         width: 100%;
+        height: 1000px;
     }
 
     .side-menu .file-input-label {
