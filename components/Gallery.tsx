@@ -5,16 +5,18 @@ export const Gallery = ({ setFile }: any) => {
     const { isOpen, onOpen, onClose } = useDisclosure();
     const [recentImages, setRecentImages] = useState([]);
 
-    useEffect(() => {
-        const cookieValue = decodeURIComponent(document.cookie
-            .split('; ')
-            .find(cookie => cookie.startsWith('recent-images='))?.split('=')[1] || '');
+    if (typeof window !== 'undefined') {
+        useEffect(() => {
+            const cookieValue = decodeURIComponent(document.cookie
+                .split('; ')
+                .find(cookie => cookie.startsWith('recent-images='))?.split('=')[1] || '');
 
-        if (cookieValue) {
-            const images = JSON.parse(cookieValue);
-            setRecentImages(images);
-        }
-    }, [document.cookie]);
+            if (cookieValue) {
+                const images = JSON.parse(cookieValue);
+                setRecentImages(images);
+            }
+        }, [document.cookie]);
+    }
 
     const handleOpen = () => {
         onOpen();

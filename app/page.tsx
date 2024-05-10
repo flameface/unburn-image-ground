@@ -54,11 +54,21 @@ export default function Home() {
 
   const handleExport = () => {
     const imageUrl = generateImageUrl();
-    const link = document.createElement('a');
-    link.href = imageUrl;
-    link.download = 'edited_image';
-    link.click();
+    const linkRef = React.useRef<HTMLAnchorElement>(null);
+
+    React.useEffect(() => {
+      if (linkRef.current) {
+        linkRef.current.href = imageUrl;
+        linkRef.current.download = 'edited_image';
+        linkRef.current.click();
+      }
+    }, [imageUrl, linkRef]);
+
+    return (
+      <a ref={linkRef} style={{ display: 'none' }} />
+    );
   }
+
 
   React.useEffect(() => {
     if (res === "square") {
@@ -123,10 +133,8 @@ export default function Home() {
       setLoading(false);
 
       const setCookieHeader = response.headers.get('Set-Cookie');
-      if (setCookieHeader) {
-
+      if (setCookieHeader && typeof window !== 'undefined') {
         const cookieValue = setCookieHeader.split(';')[0];
-
         document.cookie = cookieValue;
       }
     } catch (error) {
