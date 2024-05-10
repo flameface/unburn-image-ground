@@ -69,7 +69,6 @@ export default function Home() {
     );
   }
 
-
   React.useEffect(() => {
     if (res === "square") {
       setWidth(1024);
@@ -99,6 +98,8 @@ export default function Home() {
     if (file) {
       const img = new Image();
       img.onload = () => {
+        setWidth(img.naturalWidth);
+        setHeight(img.naturalHeight);
         setLoading(false);
       };
       img.src = imageUrl;
