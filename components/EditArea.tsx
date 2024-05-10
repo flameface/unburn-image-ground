@@ -1,12 +1,15 @@
 import { Button, Slider } from '@nextui-org/react';
-import React from 'react';
+import React, { useRef } from 'react';
 import { Resizable } from 'react-resizable';
 
 export const ResizableEditArea = ({ image, loading }: any) => {
+    const containerRef = useRef<HTMLDivElement>(null);
+
     const [width, setWidth] = React.useState(500);
     const [height, setHeight] = React.useState(500);
     const [zoom, setZoom] = React.useState<any>(50);
     const [dragging, setDragging] = React.useState(false);
+    const [pinching, setPinching] = React.useState<any>(false);
     const [offsetX, setOffsetX] = React.useState(0);
     const [offsetY, setOffsetY] = React.useState(0);
     const [contentOffsetX, setContentOffsetX] = React.useState(0);
@@ -20,15 +23,27 @@ export const ResizableEditArea = ({ image, loading }: any) => {
     };
 
     const handleMouseDown = (e: any) => {
+        if (!containerRef.current?.contains(e.target)) return;
         setDragging(true);
         setOffsetX(e.clientX);
         setOffsetY(e.clientY);
     };
 
     const handleTouchStart = (e: any) => {
-        setDragging(true);
-        setOffsetX(e.touches[0].clientX);
-        setOffsetY(e.touches[0].clientY);
+        if (!containerRef.current?.contains(e.target)) return;
+        if (e.touches.length === 2) {
+            const touch1 = e.touches[0];
+            const touch2 = e.touches[1];
+            const dist = Math.sqrt(
+                Math.pow(touch1.clientX - touch2.clientX, 2) +
+                Math.pow(touch1.clientY - touch2.clientY, 2)
+            );
+            setPinching(dist);
+        } else {
+            setDragging(true);
+            setOffsetX(e.touches[0].clientX);
+            setOffsetY(e.touches[0].clientY);
+        }
     };
 
     const handleMouseMove = (e: any) => {
@@ -47,15 +62,33 @@ export const ResizableEditArea = ({ image, loading }: any) => {
         }
     };
 
+    const handleTouchMove = (e: any) => {
+        if (pinching && e.touches.length === 2) {
+            const touch1 = e.touches[0];
+            const touch2 = e.touches[1];
+            const dist = Math.sqrt(
+                Math.pow(touch1.clientX - touch2.clientX, 2) +
+                Math.pow(touch1.clientY - touch2.clientY, 2)
+            );
+            setZoom(zoom + (dist - pinching) * 0.1);
+            setPinching(dist);
+        } else if (dragging) {
+            handleMouseMove(e);
+        }
+    };
+
     const handleMouseUp = () => {
         setDragging(false);
     };
 
     const handleTouchEnd = () => {
         setDragging(false);
+        setPinching(false);
     };
 
     const handleWheel = (e: any) => {
+        if (!containerRef.current?.contains(e.target)) return;
+        e.preventDefault();
         if (e.deltaY < 0 && zoom < 500) {
             setZoom(zoom + 10);
         } else if (e.deltaY > 0 && zoom > 10) {
@@ -75,15 +108,18 @@ export const ResizableEditArea = ({ image, loading }: any) => {
 
     return (
         <div
+            ref={containerRef}
             className="edit-area"
             style={{
                 cursor: dragging ? 'grabbing' : 'grab',
+                overflow: 'hidden',
+                touchAction: 'none',
             }}
             onMouseDown={handleMouseDown}
             onMouseMove={handleMouseMove}
             onMouseUp={handleMouseUp}
             onTouchStart={handleTouchStart}
-            onTouchMove={handleMouseMove}
+            onTouchMove={handleTouchMove}
             onTouchEnd={handleTouchEnd}
             onWheel={handleWheel}
         >

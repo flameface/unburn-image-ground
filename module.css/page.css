@@ -132,7 +132,7 @@
 @media screen and (max-width: 768px) {
     .ground {
         display: flex;
-        flex-direction: column-reverse;
+        flex-direction: column;
         width: 100%;
         height: 100%;
         gap: 20px;
@@ -145,7 +145,7 @@
 
     .side-menu {
         width: 100%;
-        height: 1000px;
+        height: 400px;
     }
 
     .side-menu .file-input-label {
