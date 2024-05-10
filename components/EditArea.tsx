@@ -66,7 +66,7 @@ export const ResizableEditArea = ({ image, loading }: any) => {
     const [isCopying, setIsCopying] = React.useState(false);
 
     const handleCopy = () => {
-        navigator.clipboard.writeText(`http://localhost:8888${image}`)
+        navigator.clipboard.writeText(`${window.location.origin}${image}`)
         setIsCopying(true);
         setTimeout(() => {
             setIsCopying(false);
